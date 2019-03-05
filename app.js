@@ -24,5 +24,5 @@ console.log("PORT=" + config.PORT);
 
  server.listen(config.PORT, function () {
 
-     console.log('APIs 4 Gifts Demo - API server running on port ' + config.PORT + "!!!");
+     console.log('APIs 4 Power Meter Demo - API server running on port ' + config.PORT + "!!!");
  });

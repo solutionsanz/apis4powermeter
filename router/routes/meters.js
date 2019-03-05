@@ -62,6 +62,11 @@ module.exports = function (app) {
 
 
                         col = resMetadata[y].name.toLowerCase();
+
+                        // Skipping on purpose if the column is the aout-increment "id", as it is not part of the API spec.
+                        if (col != null && col != undefined && col == "id")
+                            continue;
+
                         colValue = resData[x][y];
                         renderedResult[col] = colValue;
 
@@ -85,7 +90,15 @@ module.exports = function (app) {
     /* GET /devices/:deviceId */
     app.get('/devices/:deviceId', function (req, res) {
 
-        var deviceId = req.params.device_id; //deviceId to filter by (if given)
+        var deviceId = req.params.deviceId; //deviceId to filter by (if given)
+
+        if (deviceId == null || deviceId == undefined) {
+            log("POST", "/devices/:deviceId", "No deviceId received... Please verify and try again.");
+            res.status(400).end("No deviceId received... Please verify and try again."); //Bad request...
+            return;
+        }        
+
+        log("GET", "/devices/deviceId", "deviceId received [" + deviceId + "]");
 
         var query = `SELECT * FROM METERS WHERE DEVICE_ID = :deviceId`;
         var params = [];
@@ -99,12 +112,10 @@ module.exports = function (app) {
             return;
         }
 
-        log("GET", "/devices/deviceId", "deviceId received [" + deviceId + "]");
-
 
         funct.getDataGeneric(query, params, function (resMetadata, resData) {
 
-            log("GET", "/devices/deviceId", "Found: [" + JSON.stringify({
+            log("GET", "/devices", "Found: [" + JSON.stringify({
                 resData
             }) + "]");
 
@@ -113,7 +124,7 @@ module.exports = function (app) {
             // case we simply return it.
             // Otherwise we will create an array of 1 element
             // in the response.
-            // var result = [];
+            var arrResult = [];
             var renderedResult = {};
             if (resMetadata != null && resMetadata != undefined && resData != null && resData != undefined) {
 
@@ -125,6 +136,12 @@ module.exports = function (app) {
 
 
                         col = resMetadata[y].name.toLowerCase();
+
+                        // Skipping on purpose if the column is the aout-increment "id", as it is not part of the API spec.
+                        if (col != null && col != undefined && col == "id")
+                            continue;
+
+
                         colValue = resData[x][y];
                         renderedResult[col] = colValue;
 
@@ -132,14 +149,14 @@ module.exports = function (app) {
                     }
                     // Adding full record to array:
                     console.log("record is [" + JSON.stringify(renderedResult) + ']');
-                    // result.push(renderedResult);
+                    arrResult.push(renderedResult);
                 }
 
             }
 
             // Returning result
             res.send({
-                "device": renderedResult
+                "devices": arrResult
             });
         });
     });
@@ -148,7 +165,7 @@ module.exports = function (app) {
     /* POST /devices/:deviceId */
     app.post('/devices/:deviceId', function (req, res) {
 
-        var deviceId = req.params.device_id; //deviceId to filter by (if given)
+        var deviceId = req.params.deviceId; //deviceId to filter by (if given)
 
         if (deviceId == null || deviceId == undefined) {
             log("POST", "/devices/:deviceId", "No deviceId received... Please verify and try again.");
@@ -166,33 +183,33 @@ module.exports = function (app) {
             return;
         }
 
+        console.log("Device to be inserted into DB [" + JSON.stringify(device) + "]");
+
         var strQuery = " INTO METERS (DEVICE_ID, DEVICE_EVENT, DEVICE_TEMP, DEVICE_BATTERY_PCT, DEVICE_USAGE, DEVICE_LAT, DEVICE_LONG, DEVICE_DATE_TIME, DEVICE_NAME, DEVICE_MODEL, DEVICE_MANAGER)";
         strQuery += " VALUES (:DEVICE_ID, :DEVICE_EVENT, :DEVICE_TEMP, :DEVICE_BATTERY_PCT, :DEVICE_USAGE, :DEVICE_LAT, :DEVICE_LONG, :DEVICE_DATE_TIME, :DEVICE_NAME, :DEVICE_MODEL, :DEVICE_MANAGER) ";
 
         var query = "INSERT ALL";
         var params = [];
 
-        for (var x in device) {
+
 
             query = query + strQuery;
 
             query = query.replace(/:DEVICE_ID/g, deviceId);
-            query = query.replace(/:DEVICE_EVENT/g, "'" + device[x].device_event + "'");
-            query = query.replace(/:DEVICE_TEMP/g, device[x].device_temp);
-            query = query.replace(/:DEVICE_BATTERY_PCT/g, device[x].device_battery_pct);
-            query = query.replace(/:DEVICE_USAGE/g, device[x].device_usage);
-            query = query.replace(/:DEVICE_LAT/g, device[x].device_lat);
-            query = query.replace(/:DEVICE_LONG/g, device[x].device_long);
-            query = query.replace(/:DEVICE_DATE_TIME/g, "'" + device[x].ddevice_date_time + "'");
-            query = query.replace(/:DEVICE_NAME/g, "'" + device[x].device_name + "'");
-            query = query.replace(/:DEVICE_MODEL/g, "'" + device[x].device_model + "'");
-            query = query.replace(/:DEVICE_MANAGER/g, "'" + device[x].device_manager + "'");
-        }
+            query = query.replace(/:DEVICE_EVENT/g, "'" + device.device_event + "'");
+            query = query.replace(/:DEVICE_TEMP/g, device.device_temp);
+            query = query.replace(/:DEVICE_BATTERY_PCT/g, device.device_battery_pct);
+            query = query.replace(/:DEVICE_USAGE/g, device.device_usage);
+            query = query.replace(/:DEVICE_LAT/g, device.device_lat);
+            query = query.replace(/:DEVICE_LONG/g, device.device_long);
+            query = query.replace(/:DEVICE_DATE_TIME/g, "'" + device.ddevice_date_time + "'");
+            query = query.replace(/:DEVICE_NAME/g, "'" + device.device_name + "'");
+            query = query.replace(/:DEVICE_MODEL/g, "'" + device.device_model + "'");
+            query = query.replace(/:DEVICE_MANAGER/g, "'" + device.device_manager + "'");
+        
 
         query += "SELECT * FROM DUAL";
-
-
-        console.log("Items/Rows to be inserted into DB [" + device.length + "]");
+      
 
         funct.insertDataGeneric(query, params, function () {
 

@@ -1,7 +1,7 @@
 {
-  "name": "APIs4Gifts",
+  "name": "APIs4PowerMeter",
   "version": "1.0.0",
-  "description": "NodeJS microservie that interacts with Oracle Autonomous Transaction Processing DB (ATP)",
+  "description": "NodeJS microservie that interacts with Oracle Autonomous Data Warehouse (ADW)",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"

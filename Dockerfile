@@ -8,6 +8,12 @@ RUN apt-get update
 WORKDIR /myApp
 ADD . /myApp
 
+
+#
+# Setting the Wallet to defualt a path inside container
+#
+RUN sed -i 's#/vagrant#/myApp#g' /myApp/oradbInstantClient/network/admin/sqlnet.ora 
+
 #
 # Installing and Configuring Node-Oracledb with Oracle DB Instant Client
 #
