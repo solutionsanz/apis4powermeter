@@ -40,12 +40,5 @@ spec:
           value: "3000"                    
         ports:
         - containerPort: 3000
-        volumeMounts:
-          - name: oke-autdb-persistent-storage
-            mountPath: /var/lib/cri
       imagePullSecrets:
       - name: ocir-reg
-      volumes:
-        - name: oke-autdb-persistent-storage
-          persistentVolumeClaim:
-            claimName: okeautdbpvc

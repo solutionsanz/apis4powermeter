@@ -65,6 +65,6 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
 
-  # Where args => "'TENANCY_OCID' 'USER_OCID' 'PUB_KEY_FINGERPRINT' 'OKE_OCID' 'REGION_SHORTNAME'"
-  config.vm.provision "shell", path: "bootstrap.sh", args => "'TENANCY_OCID' 'USER_OCID' 'PUB_KEY_FINGERPRINT' 'OKE_OCID' 'REGION_SHORTNAME'"
+  # Where args => "'TENANCY_OCID' 'USER_OCID' 'PUB_KEY_FINGERPRINT' 'OKE_OCID' 'REGION_SHORTNAME' 'INSTALL_KUBECTL_BOOLEAN'"
+  config.vm.provision "shell", path: "bootstrap.sh", args => "'TENANCY_OCID' 'USER_OCID' 'PUB_KEY_FINGERPRINT' 'OKE_OCID' 'REGION_SHORTNAME' 'false'"
 end

@@ -13,12 +13,12 @@ if [ ! -f /home/vagrant/ssh/id_rsa_pri.pem ]; then
     exit 1
 fi
 
-if [ "$#" -ne 5 ]; then
+if [ "$#" -ne 6 ]; then
 
     echo "**************************************** Error: "
     echo " Illegal number of parameters."
-    echo " Order: [TENANCY_OCID USER_OCID PUB_KEY_FINGERPRINT OKE_OCID REGION_SHORTNAME]"
-    echo " Example: ./bootstrap.sh TENANCY_OCID USER_OCID PUB_KEY_FINGERPRINT OKE_OCID us-ashburn-1"
+    echo " Order: [TENANCY_OCID USER_OCID PUB_KEY_FINGERPRINT OKE_OCID REGION_SHORTNAME INSTALL_KUBECTL_BOOLEAN]"
+    echo " Example: ./bootstrap.sh TENANCY_OCID USER_OCID PUB_KEY_FINGERPRINT OKE_OCID us-ashburn-1 true"
     echo "****************************************"
     exit 1
     
@@ -29,6 +29,7 @@ USER_OCID=$2
 PUB_KEY_FINGERPRINT=$3
 OKE_OCID=$4
 REGION_SHORTNAME=$5
+INSTALL_KUBECTL_BOOLEAN=$6
 
 
     # echo "##########################################################################"
@@ -73,6 +74,12 @@ REGION_SHORTNAME=$5
 
     echo "export LD_LIBRARY_PATH=/vagrant/oradbInstantClient" >> /home/vagrant/.bashrc && echo "export TNS_ADMIN=/vagrant/oradbInstantClient/network/admin" >> /home/vagrant/.bashrc && bash
     # See: https://oracle.github.io/odpi/doc/installation.html#linux
+
+
+    if [ "$INSTALL_KUBECTL_BOOLEAN" = false ]; then
+        echo "No need to install kubectl. Finishing bootstrap successfully!!!"
+        exit 0
+    fi    
 
 
     echo "##########################################################################"
