@@ -1,0 +1,30 @@
+{
+  "name": "APIs4Gifts",
+  "version": "1.0.0",
+  "description": "NodeJS microservie that interacts with Oracle Autonomous Transaction Processing DB (ATP)",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [
+    "swagger",
+    "api",
+    "anki",
+    "medrec"
+  ],
+  "author": "Carlos Rodriguez Iturria",
+  "license": "MIT",
+  "engines" : { "node" : ">=4.1.0 <5.5.0" },
+  "dependencies": {
+    "body-parser": "^1.6.5",
+    "express": "^4.8.5",    
+    "mongodb": "^2.2.24",
+    "monk": "^4.0.0",
+    "js-yaml": "^3.8.4",
+    "google-translate-api": "*",
+    "gmail-sender-oauth" : "*",
+    "gmail-api-sync" : "*",
+    "oracledb": "*"
+  }
+}
+

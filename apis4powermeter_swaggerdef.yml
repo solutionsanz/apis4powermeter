@@ -1,0 +1,259 @@
+swagger: "2.0"
+info:
+  description: "This project provides a platform to interact via REST APIs with Oracle Autonomous Database for Data Warehouse (ADW) to create and retrieve power meter data."
+  version: "0.1.3"
+  title: "APIs 4 Power Meter Demo"
+  #termsOfService: "http://redthunder.blog/terms"
+  contact:
+    email: "carlos.rodriguez.iturria@oracle.com"
+  #license:
+  #  name: "Apache 2.0"
+  #  url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+basePath: "/"
+host: "localhost:3000"
+#basePath: "/nf/device"
+#host: "apipdev.oracleau.cloud"
+tags:
+- name: "Meter"
+  description: "Power Meter data to be collected"
+  externalDocs:
+    description: "Find out more"
+    url: "http://redthunder.blog"  
+schemes:
+#- "https"
+- "http"
+security:
+  - X-MyAPI-Key: []
+paths:
+  /devices:
+    get:
+      tags:
+      - "Meter"
+      summary: "Finds all power meter records information."
+      description: "Gets all power meter records information"
+      operationId: "getMeterData"
+      produces: 
+        - "application/json"
+      responses:
+        200:
+          description: "Returns records data."
+          schema:
+            properties:
+              games:
+                type: "array"
+                items:
+                  $ref: "#/definitions/MeterResponse"
+          examples:
+            application/json:
+              devices:
+                - device_id: 12345
+                  device_event: UP
+                  device_temp: 89
+                  device_battery_pct: 80
+                  device_usage: 70
+                  device_lat: -37.835311
+                  device_long: 144.9725336
+                  ddevice_date_time: 2018-07-29 09:17:13.812189
+                  device_name: Device100
+                  device_model: MH 107
+                  device_manager: Origin
+                - device_id: 54321
+                  device_event: DOWN
+                  device_temp: 77
+                  device_battery_pct: 25
+                  device_usage: 70
+                  device_lat: -37.835311
+                  device_long: 144.9725336
+                  ddevice_date_time: 2018-07-29 09:17:13.812189
+                  device_name: Device100
+                  device_model: MH 107
+                  device_manager: Origin                  
+  /devices/{device_id}:
+    get:
+      tags:
+      - "Meter"
+      summary: "Finds power meter records information."
+      description: "Gets all power meter records information or by Id"
+      operationId: "getPowerMeterDeviceById"
+      produces: 
+        - "application/json"
+      parameters:
+      - name: "device_id"
+        in: "path"
+        description: "Field used to filter the device data to be returned."
+        required: true
+        type: "string"
+        x-example: '12345'
+      responses:
+        200:
+          description: "Returns records data."
+          schema:
+            properties:
+              device:
+                $ref: "#/definitions/MeterResponse"
+          examples:
+            application/json:
+              device:
+                device_id: 12345
+                device_event: UP
+                device_temp: 89
+                device_battery_pct: 80
+                device_usage: 70
+                device_lat: -37.835311
+                device_long: 144.9725336
+                ddevice_date_time: 2018-07-29 09:17:13.812189
+                device_name: Device100
+                device_model: MH 107
+                device_manager: Origin
+              
+    post:
+      tags:
+      - "Meter"
+      summary: "Creates a new power meter record."
+      description: "Returns the just inserted record."
+      operationId: "postPowerMeterRecord"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "device_id"
+        in: "path"
+        description: "Field used to filter the device data to be returned."
+        required: true
+        type: "string"
+        x-example: '12345'      
+      - in: "body"
+        name: "body"
+        description: "New power meter record that need to be added."
+        required: true
+        schema:
+            properties:
+              device:
+                $ref: "#/definitions/MeterRequest"
+      responses:
+        200:
+          description: "Returns the just created record."
+          schema:
+            properties:
+              device:
+                $ref: '#/definitions/MeterResponse'
+          examples:
+            application/json:
+              device:
+                device_id: 12345
+                device_event: UP
+                device_temp: 89
+                device_battery_pct: 80
+                device_usage: 70
+                device_lat: -37.835311
+                device_long: 144.9725336
+                ddevice_date_time: 2018-07-29 09:17:13.812189
+                device_name: Device100
+                device_model: MH 107
+                device_manager: Origin
+           
+securityDefinitions:
+  X-MyAPI-Key:
+    type: "apiKey"
+    name: "x-api-key"
+    in: "header"
+definitions:
+  MeterRequest:
+    type: "object"
+    required:
+    - "device_event"
+    - "device_temp"
+    - "device_battery_pct"
+    - "device_usage"
+    - "device_lat"
+    - "device_long"
+    - "ddevice_date_time"
+    - "device_name"
+    - "device_model"
+    - "device_manager"
+    properties:
+      device_event:
+        type: "string"
+        example: "UP"
+      device_temp:
+        type: "number"
+        example: 89
+      device_battery_pct:
+        type: "number"
+        example: 80
+      device_usage:
+        type: "number"
+        example: 70
+      device_lat:
+        type: "number"
+        example: -37.835311
+      device_long:
+        type: "number"
+        example: 144.9725336
+      ddevice_date_time:
+        type: "string"
+        example: "2018-07-29 09:17:13.812189"
+      device_name:
+        type: "string"
+        example: "Device100"
+      device_model:
+        type: "string"
+        example: "MH 107"
+      device_manager:
+        type: "string"
+        example: "Origin"
+
+  MeterResponse:
+    type: "object"
+    required:
+    - "device_id"
+    - "device_event"
+    - "device_temp"
+    - "device_battery_pct"
+    - "device_usage"
+    - "device_lat"
+    - "device_long"
+    - "ddevice_date_time"
+    - "device_name"
+    - "device_model"
+    - "device_manager"
+    properties:
+      device_id:
+        type: "number"
+        example: 12345
+      device_event:
+        type: "string"
+        example: "UP"
+      device_temp:
+        type: "number"
+        example: 89
+      device_battery_pct:
+        type: "number"
+        example: 80
+      device_usage:
+        type: "number"
+        example: 70
+      device_lat:
+        type: "number"
+        example: -37.835311
+      device_long:
+        type: "number"
+        example: 144.9725336
+      ddevice_date_time:
+        type: "string"
+        example: "2018-07-29 09:17:13.812189"
+      device_name:
+        type: "string"
+        example: "Device100"
+      device_model:
+        type: "string"
+        example: "MH 107"
+      device_manager:
+        type: "string"
+        example: "Origin"
+
+
+externalDocs:
+  description: "Find out more about our APIs"
+  url: "http://redthunder.blog"

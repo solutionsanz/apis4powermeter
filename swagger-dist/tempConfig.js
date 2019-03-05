@@ -1,0 +1,1 @@
+localConfig = {"API_GW_ENABLED": "false", "API_GW_BASEURL": "/apis4xxx"};

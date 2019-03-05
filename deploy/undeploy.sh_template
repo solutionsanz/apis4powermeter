@@ -1,0 +1,10 @@
+#!/bin/bash
+#microservices..
+  #apis4powermeter..
+  kubectl delete -f kubernetes/apis4powermeter-ing.yaml
+  kubectl delete -f kubernetes/apis4powermeter-svc.yaml
+  kubectl delete -f kubernetes/apis4powermeter-dpl.yaml
+  kubectl delete secret ocir-reg --namespace=apis4powermeter
+  kubectl delete namespace apis4powermeter
+
+  #kubectl delete -f kubernetes/apis4powermeter-pvc.yaml
