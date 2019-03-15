@@ -1,0 +1,9 @@
+
+chmod +x /home/pi/demos/powermeter/device_v1.sh
+
+sudo vi /etc/rc.local
+
+    # Add:
+    sudo /home/pi/demos/powermeter/device_v1.sh & > /home/pi/demos/powermeter/log_rclocal.out 2>&1
+
+
