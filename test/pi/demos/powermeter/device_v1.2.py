@@ -4,9 +4,8 @@ import time
 import random
 import json
 
-bc_url = "https://EB6050424A6C4A4FB3080BC0A533596B.blockchain.ocp.oraclecloud.com:443/restproxy1/bcsgw/rest/v1/transaction/invocation"
 apps_url = "https://xx.xx.xx.xx/apis4powermeter/devices/"
-comms_url = "https://xx.xx.xx.xx/apis4notifications/sms"
+#comms_url = "https://xx.xx.xx.xx/sms"
 
 eventDateTime = datetime.datetime.today().strftime("%Y-%m-%d-%H.%M.%S")
 device_event_group = ['UP','OUTAGE','LOW POWER','HIGH POWER','TAMPER']
@@ -29,9 +28,9 @@ device_doc = {
   }
 
 }
-myOwner = "Carlos"
-myPhone = "+61449588xxx"
-myLocation = "417 St Kilda Rd"
+myOwner = "Franco Ucci"
+myPhone = "+614xxxxxxxx"
+myLocation = "Adelaide Oval"
 myAction = "Camera"+str(random.randrange(10,40))
 
 for i in range(100,109,1):
@@ -62,4 +61,3 @@ for i in range(100,109,1):
     #resp = requests.post(comms_url, data=sendSMS, headers={'Content-Type': 'application/json'})
     
     time.sleep(2)
-
