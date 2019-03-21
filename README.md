@@ -61,7 +61,7 @@ Containerise APIs 4 Power Meter Application
 
             For example:
 
-                docker tag c26c58862548 cciturria/apis4gifts:1.0
+                docker tag c26c58862548 cciturria/apis4powermeter:1.0
 
             Note, if you are unsure about the actual "image_id", you can use "docker images" to gather all images being generated.
 
@@ -82,7 +82,7 @@ Containerise APIs 4 Power Meter Application
 
             docker push [DockerRepoUsername]/[DockerRepoName]
 
-                E.g. docker push cciturria/apis4gifts:1.0
+                E.g. docker push cciturria/apis4powermeter:1.0
 
 Deploy APIs 4 Power Meter application in Kubernetes
 ------
@@ -101,7 +101,7 @@ Deploy APIs 4 Power Meter application in Kubernetes
 
             cd deploy/kubernetes
 
-   - Use the template **apis4gifts-dpl.yaml_sample** to create a new file **apis4gifts-dpl.yaml** - In this file, at the end, set the Docker image tag name (e.g. xxx/apis4gifts:1.0), ATP DB instance username, password and TNS name.
+   - Use the template **apis4powermeter-dpl.yaml_sample** to create a new file **apis4powermeter-dpl.yaml** - In this file, at the end, set the Docker image tag name (e.g. xxx/apis4powermeter:1.0), ATP DB instance username, password and TNS name.
 
    - Deploy APIs 4 Power Meter Kubernetes application resources (deployment, service, ingress)
 
